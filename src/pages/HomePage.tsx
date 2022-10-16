@@ -1,14 +1,22 @@
 import { useMemo } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
-import { useAppSelector } from '../hooks';
+import { useAppSelector, useAppDispatch } from '../hooks';
 import { InventoryListing } from '../components';
-import { selectInventoryList } from '../store/inventorySlice';
+import { selectInventoryList, inventoryActions } from '../store/inventorySlice';
 
 const HomePage = (): JSX.Element => {
   const inventoryList = useAppSelector(selectInventoryList);
+  const dispatch = useAppDispatch();
+
+  const handleOnClickAddCategory = () => {
+    dispatch(inventoryActions.createCategory());
+  };
 
   const inventoryListByCategories = useMemo(() => {
+    if (!Object.entries(inventoryList).length) {
+      return null;
+    }
     return Object.entries(inventoryList).map(([categoryId, { category, ...restCategoryDetails }], idx) => {
       return (
         <div key={categoryId} className="mb-5">
@@ -20,7 +28,13 @@ const HomePage = (): JSX.Element => {
       );
     });
   }, [inventoryList]);
-  return <>{inventoryListByCategories}</>;
+
+  return (
+    <>
+      {inventoryListByCategories}
+      <Button onClick={handleOnClickAddCategory}>Add category</Button>
+    </>
+  );
 };
 
 export default HomePage;

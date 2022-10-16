@@ -10,7 +10,7 @@ interface IBaseFormProps {
 
 const BaseForm: React.FC<IBaseFormProps> = ({ customFooter, title, children, onDelete }): JSX.Element => {
   return (
-    <Card>
+    <Card className="h-100">
       <Card.Header>
         <Stack direction="horizontal" className="justify-content-between align-items-center">
           <Card.Title className="m-0">{title}</Card.Title>
